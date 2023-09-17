@@ -1,5 +1,5 @@
-import random
 import os
+import random
 from time import sleep
 from domino import Piece
 from typing import List

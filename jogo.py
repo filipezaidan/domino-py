@@ -38,7 +38,7 @@ class Jogo:
 
                     print(f'\nJogador da vez: {jogador.name}')
                     print('________________________')
-                    jogador.showMyHands()
+                    jogador.showPieces()
                     print('________________________')
 
                     opcao = int(input('\nDigite a opção da peça desejada: '))
@@ -54,7 +54,7 @@ class Jogo:
                                 contaPular = 0
                                 isPlayed = True
                                 jogador.removePiece(opcao)
-                                if jogador.getQtdPieces() ==0:
+                                if jogador.sizePieces() ==0:
                                     isWin= True
                                     self.ganhador = jogador
                                     break
@@ -114,4 +114,4 @@ class Jogo:
             for i in range(7):
                 peca = self.pecas.pop()
                 piecesSelected.add(peca)
-            jogador.getPecas(piecesSelected)
+            jogador.addPieces(piecesSelected)

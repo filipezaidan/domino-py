@@ -1,22 +1,18 @@
 from lista import ListHandsPieces
-from domino import Piece, PieceNode
+from domino import PieceNode
 
 class Player:
     def __init__(self, name):
         self.name = name
         self._mypieces:ListHandsPieces = None
 
-    def __repr__(self):
-        pass
-
-
-    def getQtdPieces(self):
+    def sizePieces(self):
         return self._mypieces.size()
 
-    def getPecas(self, pieces):
+    def addPieces(self, pieces):
         self._mypieces = pieces
 
-    def showMyHands(self):
+    def showPieces(self):
         atual = self._mypieces.head
         str = ''
         count = 0
@@ -25,60 +21,63 @@ class Player:
             str+= '(%s) -> [%s|%s] \n' % (count, atual.piece.left, atual.piece.right)
             atual = atual.getNext()
         return print(str + '(0) -> Passar a vez')
-
-    def searchPiece(self, opcao: int):
-        mypieces = self._mypieces
-        atual: PieceNode = mypieces.head
-        encontrou: bool = False
+    
+    def search(self, opcao:int):
+        pieces = self._mypieces
+        current: PieceNode = pieces.head
+        isFind = False
         count: int = 1
-        piece = None
-        
-        while atual is not None and not encontrou:
+        pieceFinded = None
+
+        while current is not None and not isFind:
             if opcao == count:
-                encontrou = True
-                piece = atual.piece
+                isFind = True
+                pieceFinded = current.piece
             else:
                 count += 1
-                atual = atual.getNext()
-        if encontrou:
+                current = current.getNext()
+        return pieceFinded if isFind else None
+
+    def searchPiece(self, opcao: int):
+        piece = self.search(opcao)
+
+        if piece:
             return piece
         else:
             print('Opção inválida!')
             return None
 
 
-    def removePiece(self, indice: int) -> int:
-        mypieces = self._mypieces
-        atual: PieceNode = mypieces.head
-        anterior: PieceNode = None
-        encontrou: bool = False
-        count: int = 1
+    def removePiece(self, indice: int):
+        pieces = self._mypieces
+        current: PieceNode = pieces.head
+        previous: PieceNode = None
+        isFind = False
+        count = 1
 
-        while atual is not None and not encontrou:
+        while current is not None and not isFind:
             if indice == count:
-                encontrou = True
+                isFind = True
             else:
                 count += 1
-                anterior = atual
-                atual = atual.getNext()
+                previous = current
+                current = current.getNext()
 
-        if encontrou:
-            if anterior is None:
-                mypieces.head = atual.getNext()
+        if isFind:
+            if previous is None:
+                pieces.head = current.getNext()
             else:
-                anterior.setNext(atual.getNext())
-
-            self._mypieces = mypieces
-
+                previous.setNext(current.getNext())
+            self._mypieces = pieces
         else:
-            print('Peça não encontrada no índice especificado.')
+            print('Peça não encontrada.')
     
     def countPoints(self):
-        atual = self._mypieces.head
+        currentPiece = self._mypieces.head
         points = 0
-        while atual != None:
-            points+= atual.piece.getPoints()
-            atual = atual.getNext()
+        while currentPiece != None:
+            points+= currentPiece.piece.getPoints()
+            currentPiece = currentPiece.getNext()
         return points
 
         
