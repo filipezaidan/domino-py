@@ -7,9 +7,9 @@ from domino import ListPieces
 
 class Jogo:
     def __init__(self):
-        self.ganhador: Player = None
-        self.pecas = []
-        self.jogadores: List[Player] = []
+        self.playerWin: Player = None
+        self.pieces = []
+        self.players: List[Player] = []
 
     def start(self):
         os.system('cls')
@@ -23,11 +23,11 @@ class Jogo:
 
         domino = ListPieces()
 
-        empate = False
-        contaPular = 0
+        isTie = False
+        countTurn = 0
 
-        while self.ganhador == None and not empate:
-            for jogador in self.jogadores:
+        while self.playerWin == None and not isTie:
+            for player in self.players:
                 isPlayed = False
                 isWin = False
 
@@ -36,59 +36,59 @@ class Jogo:
                     
                     print(f'Jogo: {domino if domino.head != None else "Mesa vazia"}')
 
-                    print(f'\nJogador da vez: {jogador.name}')
+                    print(f'\nJogador da vez: {player.name}')
                     print('________________________')
-                    jogador.showPieces()
+                    player.showPieces()
                     print('________________________')
 
-                    opcao = int(input('\nDigite a opção da peça desejada: '))
+                    option = int(input('\nDigite a opção da peça desejada: '))
 
-                    if opcao != 0:
-                        piece = jogador.searchPiece(opcao)
+                    if option != 0:
+                        piece = player.searchPiece(option)
 
                         if piece != None:
                             isAdded = domino.add(piece)
                             
                             if isAdded:
                                 os.system("cls")
-                                contaPular = 0
+                                countTurn = 0
                                 isPlayed = True
-                                jogador.removePiece(opcao)
-                                if jogador.sizePieces() ==0:
+                                player.removePiece(option)
+                                if player.sizePieces() ==0:
                                     isWin= True
-                                    self.ganhador = jogador
+                                    self.playerWin = player
                                     break
                     else:
-                        contaPular+=1
+                        countTurn+=1
 
-                        if contaPular == len(self.jogadores):
-                            empate = True
-                            
+                        if countTurn == len(self.players):
+                            isTie = True
                             break
-
-                    
                         isPlayed = True
-        if self.ganhador:
-            print(f'Ganhador {self.ganhador.name}')
+                #sai do for assim que estiver um ganhador ou empate
+                if self.playerWin is not None or isTie is not False:
+                    break
+        if self.playerWin:
+            print(f'Ganhador {self.playerWin.name}')
         else:
             ganhadorTemp: Player = None
             points = 0
-            empate = False
+            isTie = False
 
-            for jogador in self.jogadores:
+            for player in self.players:
                 if ganhadorTemp == None:
-                    ganhadorTemp = jogador
-                    points += jogador.countPoints()
+                    ganhadorTemp = player
+                    points += player.countPoints()
                 else:
-                    nextJogadorPoints = jogador.countPoints()
+                    nextJogadorPoints = player.countPoints()
                     if points > nextJogadorPoints:
-                        ganhadorTemp = jogador
+                        ganhadorTemp = player
                         points = nextJogadorPoints
                     elif points == nextJogadorPoints:
-                        empate = True
+                        isTie = True
                     else:
-                        empate = False
-            print(f'Ganhador {ganhadorTemp.name} com total de {points} pontos' if empate == False else f'Houve empate senhores')
+                        isTie = False
+            print(f'Ganhador {ganhadorTemp.name} com total de {points} pontos' if isTie == False else f'Houve empate senhores')
 
     def addPlayers(self):
         codition = False
@@ -99,19 +99,19 @@ class Jogo:
                 for i in range(quantity):
                     name = input(f'Digite o nome do {i+1}° Jogador: ')
                     player = Player(name)
-                    self.jogadores.append(player)
+                    self.players.append(player)
                 codition= True
             else:
                 print('É preciso no minimo 2 jogadores e no máximo 4.')
             os.system('cls')
 
     def getPieces(self):
-        self.pecas = sortPieces(generatePieces())
+        self.pieces = sortPieces(generatePieces())
 
     def sendPiecesForPlayers(self):
-        for jogador in self.jogadores:
+        for jogador in self.players:
             piecesSelected = ListHandsPieces()
             for i in range(7):
-                peca = self.pecas.pop()
+                peca = self.pieces.pop()
                 piecesSelected.add(peca)
             jogador.addPieces(piecesSelected)
