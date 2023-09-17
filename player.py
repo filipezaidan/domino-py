@@ -47,7 +47,7 @@ class Player:
             return None
 
 
-    def removePiece(self, indice: int):
+    def removePiece(self, indice: int) -> int:
         mypieces = self._mypieces
         atual: PieceNode = mypieces.head
         anterior: PieceNode = None
@@ -72,3 +72,13 @@ class Player:
 
         else:
             print('Peça não encontrada no índice especificado.')
+    
+    def countPoints(self):
+        atual = self._mypieces.head
+        points = 0
+        while atual != None:
+            points+= atual.piece.getPoints()
+            atual = atual.getNext()
+        return points
+
+        

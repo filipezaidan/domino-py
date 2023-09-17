@@ -10,6 +10,9 @@ class Piece:
       temp = self.left
       self.left = self.right
       self.right = temp
+  
+  def getPoints(self):
+      return self.left + self.right
 
 class PieceNode:
     def __init__(self, piece: Piece):

@@ -19,7 +19,10 @@ class Jogo:
 
         domino = ListPieces()
 
-        while self.ganhador == None:
+        empate = False
+        contaPular = 0
+
+        while self.ganhador == None and not empate:
             for jogador in self.jogadores:
                 isPlayed = False
                 isWin = False
@@ -38,8 +41,10 @@ class Jogo:
                     if opcao != 0:
                         piece = jogador.searchPiece(opcao)
                         isAdded = domino.add(piece)
-                    
+
+                        
                         if isAdded:
+                            contaPular = 0
                             isPlayed = True
                             jogador.removePiece(opcao)
                             if jogador.getQtdPieces() ==0:
@@ -47,8 +52,34 @@ class Jogo:
                                 self.ganhador = jogador
                                 break
                     else:
+                        contaPular+=1
+
+                        if contaPular == len(self.jogadores):
+                            empate = True
+                            
+                            break
+
+                    
                         isPlayed = True
-        print(f'Ganhador {self.ganhador.name}')
+        if self.ganhador:
+            print(f'Ganhador {self.ganhador.name}')
+        else:
+            ganhadorTemp: Player = None
+            points = 0
+            empate = False
+
+            for jogador in self.jogadores:
+                if ganhadorTemp == None:
+                    ganhadorTemp = jogador
+                    points += jogador.countPoints()
+                else:
+                    nextJogadorPoints = jogador.countPoints()
+                    if points < nextJogadorPoints:
+                        ganhadorTemp = jogador
+                        points = nextJogadorPoints
+                    else:
+                        empate = True
+            print(f'Ganhador {ganhadorTemp.name} com total de {points} pontos' if empate == False else f'Houve empate senhores')
 
     def addPlayers(self):
         codition = False
