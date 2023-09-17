@@ -14,7 +14,7 @@ class Jogo:
         self.players: List[Player] = []
 
     def start(self): # Inicia o jogo
-        loading('Iniciado o jogo')
+        loading('Iniciando o jogo')
 
         self.addPlayers()
         self.getPieces()
