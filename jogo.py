@@ -1,5 +1,5 @@
 from utils import *
-from players import Player
+from player import Player
 from typing import List
 from lista import ListHandsPieces
 from domino import ListPieces
@@ -45,6 +45,7 @@ class Jogo:
                             if jogador.getQtdPieces() ==0:
                                 isWin= True
                                 self.ganhador = jogador
+                                break
                     else:
                         isPlayed = True
         print(f'Ganhador {self.ganhador.name}')
