@@ -90,7 +90,7 @@ class  ListPieces:
                   current.next = pieceTemp
             else:
                 isAdded = False
-                print('nao é possivel adicionar nada meu chapa')
+                print('Essa peça não pode ser adicionada (estou de olho)')
                 
         return isAdded
     # def size(self):

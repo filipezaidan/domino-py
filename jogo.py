@@ -1,3 +1,4 @@
+import os
 from utils import *
 from player import Player
 from typing import List
@@ -11,7 +12,10 @@ class Jogo:
         self.jogadores: List[Player] = []
 
     def start(self):
+        os.system('cls')
         print('Iniciando o jogo...')
+        sleep(2)
+        os.system('cls')
 
         self.addPlayers()
         self.getPieces()
@@ -29,28 +33,31 @@ class Jogo:
 
 
                 while not isPlayed and not isWin:
-                    print(f'Jogo: {domino if domino.head != None else "vazio"}')
+                    
+                    print(f'Jogo: {domino if domino.head != None else "Mesa vazia"}')
 
-                    print(f'Jogador {jogador.name}')
+                    print(f'\nJogador da vez: {jogador.name}')
                     print('________________________')
                     jogador.showMyHands()
                     print('________________________')
 
-                    opcao = int(input('Digite a opção da peça desejada: '))
+                    opcao = int(input('\nDigite a opção da peça desejada: '))
 
                     if opcao != 0:
                         piece = jogador.searchPiece(opcao)
-                        isAdded = domino.add(piece)
 
-                        
-                        if isAdded:
-                            contaPular = 0
-                            isPlayed = True
-                            jogador.removePiece(opcao)
-                            if jogador.getQtdPieces() ==0:
-                                isWin= True
-                                self.ganhador = jogador
-                                break
+                        if piece != None:
+                            isAdded = domino.add(piece)
+                            
+                            if isAdded:
+                                os.system("cls")
+                                contaPular = 0
+                                isPlayed = True
+                                jogador.removePiece(opcao)
+                                if jogador.getQtdPieces() ==0:
+                                    isWin= True
+                                    self.ganhador = jogador
+                                    break
                     else:
                         contaPular+=1
 
@@ -74,11 +81,13 @@ class Jogo:
                     points += jogador.countPoints()
                 else:
                     nextJogadorPoints = jogador.countPoints()
-                    if points < nextJogadorPoints:
+                    if points > nextJogadorPoints:
                         ganhadorTemp = jogador
                         points = nextJogadorPoints
-                    else:
+                    elif points == nextJogadorPoints:
                         empate = True
+                    else:
+                        empate = False
             print(f'Ganhador {ganhadorTemp.name} com total de {points} pontos' if empate == False else f'Houve empate senhores')
 
     def addPlayers(self):
@@ -94,6 +103,7 @@ class Jogo:
                 codition= True
             else:
                 print('É preciso no minimo 2 jogadores e no máximo 4.')
+            os.system('cls')
 
     def getPieces(self):
         self.pecas = sortPieces(generatePieces())

@@ -24,7 +24,7 @@ class Player:
             count+=1
             str+= '(%s) -> [%s|%s] \n' % (count, atual.piece.left, atual.piece.right)
             atual = atual.getNext()
-        return print(str + '(0) -> Passar a vez \n')
+        return print(str + '(0) -> Passar a vez')
 
     def searchPiece(self, opcao: int):
         mypieces = self._mypieces
